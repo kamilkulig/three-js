@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as THREE from "three";
+import Stats from 'stats-js';
 
 class App extends Component {
   componentDidMount() {
@@ -22,13 +23,27 @@ class App extends Component {
       cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
       this.renderer.render( this.scene, this.camera );
+      this.stats.update();
+
     };
+    this.createStats();
     animate();
   }
   render() {
     return (
       <div ref={ref => (this.mount = ref)} />
     )
+  }
+
+  createStats() {
+    this.stats = new Stats();
+    this.stats.setMode(0);
+
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '0';
+    this.stats.domElement.style.top = '0';
+
+    this.mount.appendChild( this.stats.domElement );
   }
 }
 
