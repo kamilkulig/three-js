@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import Stats from 'stats-js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 class App extends Component {
   componentDidMount() {
@@ -11,6 +12,9 @@ class App extends Component {
       powerPreference: "high-performance",
     });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
     this.mount.appendChild( this.renderer.domElement );
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -24,15 +28,21 @@ class App extends Component {
       cube.rotation.y += 0.01;
       this.renderer.render( this.scene, this.camera );
       this.stats.update();
-
     };
     this.createStats();
+    this.createOrbitControls();
     animate();
   }
   render() {
     return (
       <div ref={ref => (this.mount = ref)} />
     )
+  }
+
+  createOrbitControls() {
+    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.orbitControls.target.set(0, 20, 0);
+    this.orbitControls.update();
   }
 
   createStats() {
