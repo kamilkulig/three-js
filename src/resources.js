@@ -1,4 +1,4 @@
-export default {
+const RESOURCES = {
   floor: [
     'floor/grass1.jpg',
     'floor/vapor.jpg',
@@ -26,3 +26,5 @@ export default {
     0xF2ADA7,
   ]
 }
+
+export default RESOURCES;
