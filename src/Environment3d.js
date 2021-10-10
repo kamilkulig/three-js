@@ -8,7 +8,7 @@ class Environment3d {
   constructor(mount) {
     this.mount = mount; // rendering container
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 300 );
+    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 3000 );
     this.renderer = new THREE.WebGLRenderer({
       antialias: true, // disable for better performance
       powerPreference: "high-performance",
@@ -81,7 +81,7 @@ class Environment3d {
 
   createSky() {
     const sky = new THREE.Mesh(
-      new THREE.SphereGeometry(200, 32, 32),
+      new THREE.SphereGeometry(500, 32, 32),
       new THREE.MeshBasicMaterial({
           color: getRandomElement(RESOURCES.skyColors),
           side: THREE.BackSide,
@@ -92,6 +92,7 @@ class Environment3d {
 
   createGroundPlane() {
     const floorTexture = new THREE.TextureLoader().load( "./resources/" +  getRandomElement(RESOURCES.floor));
+    debugger;
     floorTexture.wrapS = THREE.RepeatWrapping; 
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set( 20, 20 ); 
