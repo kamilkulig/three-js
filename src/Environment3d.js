@@ -1,6 +1,9 @@
 import * as THREE from "three";
 import Stats from 'stats-js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader';
+
 import {getRandomElement, getRandomNumber} from './utils.js';
 import RESOURCES from './resources.js';
 
@@ -9,6 +12,8 @@ class Environment3d {
     this.mount = mount; // rendering container
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 3000 );
+    this.camera.position.set(75, 20, 0);
+
     this.renderer = new THREE.WebGLRenderer({
       antialias: true, // disable for better performance
       powerPreference: "high-performance",
@@ -18,16 +23,10 @@ class Environment3d {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
     this.mount.appendChild( this.renderer.domElement );
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    const cube = new THREE.Mesh( geometry, material );
-    this.scene.add( cube );
-    this.camera.position.z = 5;
+
 
     const animate = () => {
       requestAnimationFrame( animate );
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
       this.renderer.render( this.scene, this.camera );
       this.stats.update();
     };
@@ -36,13 +35,14 @@ class Environment3d {
     this.createLights();
     this.createSky();
     this.createGroundPlane();
+    this.createPlants(this.scene);
     animate();
   }
 
 
   createOrbitControls() {
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.orbitControls.target.set(0, 20, 0);
+    this.orbitControls.target.set(0, 0, 0);
     this.orbitControls.update();
   }
 
@@ -66,8 +66,6 @@ class Environment3d {
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
     directionalLight.shadow.camera.near = 0.1;
-    directionalLight.shadow.camera.far = 500.0;
-    directionalLight.shadow.camera.near = 0.5;
     directionalLight.shadow.camera.far = 500.0;
     directionalLight.shadow.camera.left = 100;
     directionalLight.shadow.camera.right = -100;
@@ -105,6 +103,29 @@ class Environment3d {
     plane.receiveShadow = true;
     plane.rotation.x = -Math.PI / 2;
     this.scene.add(plane);
+  }
+
+
+  createPlants(parent, ModifyShader_) {
+    const fbxLoader = new FBXLoader();
+    fbxLoader.setPath('resources/');
+    RESOURCES.plants.forEach((filename) => {
+      fbxLoader.load(filename, (fbx) => {
+        fbx.scale.setScalar(getRandomNumber(0.02, 0.1));
+        fbx.traverse(c => {
+          c.castShadow = true;
+          c.receiveShadow = true;
+
+          if(c.children[0]) {
+            //c.children[0].material.onBeforeCompile = ModifyShader_;
+          }
+          
+        });
+        fbx.position.set(getRandomNumber(-50, 50), 0, getRandomNumber(-50, 50));
+        fbx.rotation.y = getRandomNumber(0, 2 * Math.PI);
+        parent.add(fbx);            
+      });
+    });
   }
   
 }
