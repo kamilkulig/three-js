@@ -36,6 +36,7 @@ class Environment3d {
     this.createSky();
     this.createGroundPlane();
     this.createPlants(this.scene);
+    this.createFog();
     animate();
   }
 
@@ -105,8 +106,15 @@ class Environment3d {
     this.scene.add(plane);
   }
 
+  createFog() {
+    //  TODO: create advanced fog -> threeCoponents/Fog
+      this.scene.fog = new THREE.Fog(getRandomElement(RESOURCES.skyColors), 0.0, 400.0);
+    
+  }
 
-  createPlants(parent, ModifyShader_) {
+
+
+  createPlants(parent) {
     const fbxLoader = new FBXLoader();
     fbxLoader.setPath('resources/');
     RESOURCES.plants.forEach((filename) => {
@@ -115,10 +123,6 @@ class Environment3d {
         fbx.traverse(c => {
           c.castShadow = true;
           c.receiveShadow = true;
-
-          if(c.children[0]) {
-            //c.children[0].material.onBeforeCompile = ModifyShader_;
-          }
           
         });
         fbx.position.set(getRandomNumber(-50, 50), 0, getRandomNumber(-50, 50));
