@@ -24,6 +24,15 @@ class Environment3d {
     
     this.mount.appendChild( this.renderer.domElement );
 
+    const onWindowResize = () => {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener('resize', () => {
+      onWindowResize();
+    }, false);
 
     const animate = () => {
       requestAnimationFrame( animate );
