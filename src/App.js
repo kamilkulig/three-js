@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Environment3d from "./Environment3d";
+import './App.css';
 
 class App extends Component {
   componentDidMount() {
@@ -7,7 +8,12 @@ class App extends Component {
   }
   render() {
     return (
-      <div ref={ref => (this.mount = ref)} />
+      <>
+        <div className='threeContainer' ref={ref => (this.mount = ref)} />
+        <div className='logo'>Some looooooooooooooooooooooooooooooooooooooooooong text</div>
+
+      </>
+
     )
   }
   
