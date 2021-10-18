@@ -10,7 +10,10 @@ class App extends Component {
     return (
       <>
         <div className='threeContainer' ref={ref => (this.mount = ref)} />
-        <div className='logo'>Some looooooooooooooooooooooooooooooooooooooooooong text</div>
+        <div>
+          <div className='logo'>RANDOM 3D BACKGROUND</div>
+
+        </div>
 
       </>
 

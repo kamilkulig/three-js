@@ -63,7 +63,7 @@ class Environment3d {
     this.stats.domElement.style.position = 'absolute';
     this.stats.domElement.style.left = '0px';
     this.stats.domElement.style.bottom = '0px';
-    this.stats.domElement.style.top = ''; // has to be set
+    this.stats.domElement.style.top = ''; // has to be set in order to let bottom to work
 
 
     this.mount.appendChild( this.stats.domElement );
