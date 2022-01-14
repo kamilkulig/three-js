@@ -2,10 +2,7 @@ import * as THREE from "three";
 import Stats from 'stats-js';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader';
 
-import {getRandomElement, getRandomNumber} from './utils.js';
-import RESOURCES from './resources.js';
 
 //import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { Water } from 'three/examples/jsm/objects/Water.js';
@@ -16,7 +13,7 @@ class Environment3d {
   constructor(mount) {
     this.mount = mount; // rendering container
 
-    let container, stats;
+    let stats;
     let camera, scene, renderer;
     let controls, water, sun, mesh;
 
@@ -128,6 +125,10 @@ class Environment3d {
 
       stats = new Stats();
       mount.appendChild( stats.dom );
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = '0px';
+      stats.domElement.style.bottom = '0px';
+      stats.domElement.style.top = ''; // has to be set in order to let bottom to work
 
       // GUI
 
