@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.module.css';
 
-function Title (props) {
+function Header (props) {
 
   return <div style={{
     fontFamily: `'Cutive Mono', monospace`,
@@ -12,9 +12,11 @@ function Title (props) {
     background: 'linear-gradient(180deg, rgba(2,0,36,1) 68%, rgba(0,0,0,0) 100%)',
     height: '7rem'
   }}>
-    Title
+    <img style={{
+      width: '5rem',
+    }} src='resources/logo/sun.jpg'  />
     
   </div>
 } 
 
-export default Title;
+export default Header;
