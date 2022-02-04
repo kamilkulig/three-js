@@ -22,7 +22,15 @@ function Header (props) {
         height: '5rem',
       }} src='resources/logo/sun.jpg'  />
       <span>Kamil </span><span style={{fontWeight: 100}}>&nbsp;Kulig</span>
-    
+      <div style={{ // divider
+          height: '1.5rem',
+          'margin-left': '1rem',
+          'margin-right': '1rem',
+          width: '1px',
+          'background-color': 'hsla(21,16%,79%,.4)',
+        }} 
+a      />
+      <span style={{fontSize: '1.25rem', fontWeight: 100}}>Webdesigner & developer</span>
     </div>
   </div>
 } 
