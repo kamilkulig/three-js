@@ -10,7 +10,7 @@ function Header (props) {
     width: '100%',
     background: 'rgb(2,0,36)',
     background: 'linear-gradient(180deg, rgba(2,0,36,1) 68%, rgba(0,0,0,0) 100%)',
-    height: '7rem',
+    height: '9rem',
   }}>
     <div style={{
       display: 'flex',
@@ -28,9 +28,16 @@ function Header (props) {
           'margin-right': '1rem',
           width: '1px',
           'background-color': 'hsla(21,16%,79%,.4)',
+          'margin-top': '0.5rem',
+
         }} 
-a      />
-      <span style={{fontSize: '1.25rem', fontWeight: 100}}>Webdesigner & developer</span>
+      />
+      <span style={{
+        fontSize: '1.25rem', fontWeight: 100,
+        'margin-top': '0.5rem',
+      }}>
+        Webdesigner & developer
+      </span>
     </div>
   </div>
 } 
