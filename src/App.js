@@ -5,18 +5,18 @@ import './App.css';
 
 class App extends Component {
   componentDidMount() {
-    //  window.environment3d = new Environment3d(this.mount);
+     window.environment3d = new Environment3d(this.mount);
   }
   render() {
     return (
       <div style={{
-        'background-image': 'url(resources/mock/3d.jpg)',
-        'background-size': 'contain',
-        'background-repeat': 'no-repeat',
-        width: '100vw',
-        height: '100vh',
+        // 'background-image': 'url(resources/mock/3d.jpg)',
+        // 'background-size': 'contain',
+        // 'background-repeat': 'no-repeat',
+        // width: '100vw',
+        // height: '100vh',
       }}>
-        {/* <div className='threeContainer' ref={ref => (this.mount = ref)} /> */}
+        <div className='threeContainer' ref={ref => (this.mount = ref)} />
         <Header />
       </div>
     )
