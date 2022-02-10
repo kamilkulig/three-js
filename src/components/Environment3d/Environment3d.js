@@ -30,7 +30,7 @@ class Environment3d {
 
       scene = new THREE.Scene();
       scene.background = new THREE.Color( 0xa0a0a0 );
-      scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+      //scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
 
       const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
       hemiLight.position.set( 0, 200, 0 );
@@ -60,7 +60,7 @@ class Environment3d {
 
       // model
       const loader = new FBXLoader();
-      loader.load( 'resources/island/uploads_files_1915576_island.fbx', function ( object ) {
+      loader.load( 'resources/terrain/Terrain_1.fbx', function ( object ) {
 
         // mixer = new THREE.AnimationMixer( object );
 
