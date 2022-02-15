@@ -1,4 +1,6 @@
 import React from 'react';
+import {Colors} from  './../../utils/colors';
+
 import './style.module.css';
 
 function Header (props) {
@@ -8,7 +10,7 @@ function Header (props) {
     fontSize: '2rem',
     color: '#fff',
     width: '100%',
-    background: 'linear-gradient(180deg, rgba(2,0,36,1) 68%, rgba(0,0,0,0) 100%)',
+    background: `linear-gradient(180deg, ${Colors.NAVY} 68%, rgba(0,0,0,0) 100%)`,
     height: '9rem',
   }}>
     <div style={{
