@@ -27,7 +27,14 @@ class Environment3d {
       document.body.appendChild( container );
 
       camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
-      camera.position.set( 100, 200, 300 );
+      window.camera = camera; // for debugging purposes
+      camera.position.set(
+        -229.7125902247501,
+        114.1736637719915,
+        80.44154890605155
+      );
+      
+      console.log(camera);
 
       scene = new THREE.Scene();
       scene.background = new THREE.Color( Colors.BLACK );
@@ -121,7 +128,9 @@ class Environment3d {
 
       const delta = clock.getDelta();
 
-      if ( mixer ) mixer.update( delta );
+      if ( mixer ) {
+        mixer.update( delta );
+      }
 
       renderer.render( scene, camera );
 

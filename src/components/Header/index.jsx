@@ -10,8 +10,9 @@ function Header (props) {
     fontSize: '2rem',
     color: '#fff',
     width: '100%',
-    background: `linear-gradient(180deg, ${Colors.NAVY} 68%, rgba(0,0,0,0) 100%)`,
-    height: '9rem',
+    background: `linear-gradient(180deg, ${Colors.NAVY} 50%, rgba(0,0,0,0) 100%)`,
+    height: '12rem',
+    position: 'absolute',
   }}>
     <div style={{
       display: 'flex',
