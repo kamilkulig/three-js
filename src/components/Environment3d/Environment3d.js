@@ -12,6 +12,9 @@ import {TextGeometry} from '../../geometries/TextGeometry.js';
 
 class Environment3d {
   constructor(mount) {
+    // TODO: move most of the code to separate files
+
+
     this.mount = mount; // rendering container
     // let camera, scene, renderer, stats;
 
@@ -29,19 +32,28 @@ class Environment3d {
     // controls.target.set( 0, 0, 0 );
     // controls.update();
 
-    // // stats
-    // stats = new Stats();
-    // stats.domElement.style.position = 'absolute';
-    // stats.domElement.style.left = 'calc(100% - 80px)';
-    // stats.domElement.style.bottom = '0';
-    // container.appendChild( stats.dom );
+    let stats;
 
     function main() {
+
+
+
       const container = document.createElement( 'div' );
       document.body.appendChild( container );
       const renderer = new THREE.WebGLRenderer();
       container.appendChild( renderer.domElement );
+
+      renderer.setPixelRatio( window.devicePixelRatio );
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.shadowMap.enabled = true;
     
+      // stats
+      stats = new Stats();
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = 'calc(100% - 80px)';
+      stats.domElement.style.bottom = '0';
+      container.appendChild( stats.dom );
+
       const fov = 40;
       const aspect = 2;  // the canvas default
       const near = 0.1;
@@ -388,9 +400,12 @@ class Environment3d {
         renderer.render(scene, camera);
     
         requestAnimationFrame(render);
+        stats.update();
+
       }
     
       requestAnimationFrame(render);
+
     }
     
     main();
