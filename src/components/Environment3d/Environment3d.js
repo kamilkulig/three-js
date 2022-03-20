@@ -295,7 +295,7 @@ class Environment3d {
         }
     
         async function doit() {
-          const font = await loadFont('/examples/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
+          const font = await loadFont('resources/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
           const geometry = new TextGeometry('three.js', {
             font: font,
             size: 3.0,
