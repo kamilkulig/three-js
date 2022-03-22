@@ -5,27 +5,17 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { Colors } from '../../utils/colors';
+import { createMaterial, klein } from './Utils';
 
-import {FontLoader} from '../../loaders/FontLoader.js';
 import {ParametricGeometry} from '../../geometries/ParametricGeometry.js';
-import {TextGeometry} from '../../geometries/TextGeometry.js';
+import AsyncFontLoader from './AsyncFontLoader';
 
 class Environment3d {
   constructor(mount) {
     // TODO: move most of the code to separate files
 
 
-    this.mount = mount; // rendering container
-    // let camera, scene, renderer, stats;
-
-    // const container = document.createElement( 'div' );
-    // document.body.appendChild( container );
-
-    // renderer = new THREE.WebGLRenderer( { antialias: true } );
-    // renderer.setPixelRatio( window.devicePixelRatio );
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-    // renderer.shadowMap.enabled = true;
-    // container.appendChild( renderer.domElement );
+    this.mount = mount; 
 
 
     // const controls = new OrbitControls( camera, renderer.domElement );
@@ -62,7 +52,7 @@ class Environment3d {
       camera.position.z = 120;
     
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xAAAAAA);
+      scene.background = new THREE.Color(0xffffff);
     
       {
         const color = 0xFFFFFF;
@@ -88,19 +78,6 @@ class Environment3d {
     
         scene.add(obj);
         objects.push(obj);
-      }
-    
-      function createMaterial() {
-        const material = new THREE.MeshPhongMaterial({
-          side: THREE.DoubleSide,
-        });
-    
-        const hue = Math.random();
-        const saturation = 1;
-        const luminance = .5;
-        material.color.setHSL(hue, saturation, luminance);
-    
-        return material;
       }
     
       function addSolidGeometry(x, y, geometry) {
@@ -181,52 +158,7 @@ class Environment3d {
         addSolidGeometry(1, 1, new THREE.OctahedronGeometry(radius));
       }
       {
-        /*
-        from: https://github.com/mrdoob/three.js/blob/b8d8a8625465bd634aa68e5846354d69f34d2ff5/examples/js/ParametricGeometries.js
-    
-        The MIT License
-    
-        Copyright © 2010-2018 three.js authors
-    
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is
-        furnished to do so, subject to the following conditions:
-    
-        The above copyright notice and this permission notice shall be included in
-        all copies or substantial portions of the Software.
-    
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-        THE SOFTWARE.
-    
-        */
-        function klein(v, u, target) {
-          u *= Math.PI;
-          v *= 2 * Math.PI;
-          u = u * 2;
-    
-          let x;
-          let z;
-    
-          if (u < Math.PI) {
-              x = 3 * Math.cos(u) * (1 + Math.sin(u)) + (2 * (1 - Math.cos(u) / 2)) * Math.cos(u) * Math.cos(v);
-              z = -8 * Math.sin(u) - 2 * (1 - Math.cos(u) / 2) * Math.sin(u) * Math.cos(v);
-          } else {
-              x = 3 * Math.cos(u) * (1 + Math.sin(u)) + (2 * (1 - Math.cos(u) / 2)) * Math.cos(v + Math.PI);
-              z = -8 * Math.sin(u);
-          }
-    
-          const y = -2 * (1 - Math.cos(u) / 2) * Math.sin(v);
-    
-          target.set(x, y, z).multiplyScalar(0.75);
-        }
+
     
         const slices = 25;
         const stacks = 25;
@@ -286,36 +218,16 @@ class Environment3d {
         addSolidGeometry(-2, -1, new THREE.TetrahedronGeometry(radius));
       }
       {
-        const loader = new FontLoader();
-        // promisify font loading
-        function loadFont(url) {
-          return new Promise((resolve, reject) => {
-            loader.load(url, resolve, undefined, reject);
-          });
-        }
-    
-        async function doit() {
-          const font = await loadFont('resources/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
-          const geometry = new TextGeometry('three.js', {
-            font: font,
-            size: 3.0,
-            height: .2,
-            curveSegments: 12,
-            bevelEnabled: true,
-            bevelThickness: 0.15,
-            bevelSize: .3,
-            bevelSegments: 5,
-          });
+        AsyncFontLoader((geometry) =>  {
           const mesh = new THREE.Mesh(geometry, createMaterial());
           geometry.computeBoundingBox();
           geometry.boundingBox.getCenter(mesh.position).multiplyScalar(-1);
-    
+        
           const parent = new THREE.Object3D();
           parent.add(mesh);
-    
+        
           addObject(-1, -1, parent);
-        }
-        doit();
+        });
       }
       {
         const radius = 5;
