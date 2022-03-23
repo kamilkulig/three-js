@@ -18,9 +18,7 @@ class Environment3d {
     this.mount = mount; 
 
 
-    // const controls = new OrbitControls( camera, renderer.domElement );
-    // controls.target.set( 0, 0, 0 );
-    // controls.update();
+
 
     let stats, scene;
 
@@ -60,6 +58,10 @@ class Environment3d {
       const far = 1000;
       const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       camera.position.z = 120;
+
+      const controls = new OrbitControls( camera, renderer.domElement );
+      controls.target.set( 0, 0, 0 );
+      controls.update();
     
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
@@ -143,6 +145,7 @@ class Environment3d {
           obj.rotation.y = rot;
         });
     
+        controls.update();
         renderer.render(scene, camera);
     
         requestAnimationFrame(render);
