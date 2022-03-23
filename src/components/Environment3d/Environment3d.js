@@ -22,13 +22,12 @@ class Environment3d {
 
     let stats, scene;
 
-    function createLights() {
-      
+    function createLight() {
         const color = 0xFFFFFF;
         const intensity = 1;
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(-1, 2, 4);
-        scene.add(light);
+        return light;
     }
 
 
@@ -57,7 +56,8 @@ class Environment3d {
       const near = 0.1;
       const far = 1000;
       const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.z = 120;
+      camera.position.set(-34.2007125993641, 33.76813491715959,-0.15595484033965595);
+      window.camera = camera; // for debugging purposes
 
       const controls = new OrbitControls( camera, renderer.domElement );
       controls.target.set( 0, 0, 0 );
@@ -65,8 +65,9 @@ class Environment3d {
     
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
-      createLights();
-    
+      const light = createLight();
+      scene.add(light);
+
       const objects = [];
       const spread = 15;
     
@@ -90,33 +91,33 @@ class Environment3d {
       }
     
     
-      {
-        const radius = 7;
-        addSolidGeometry(2, 2, new THREE.DodecahedronGeometry(radius));
-      }
+      // {
+      //   const radius = 7;
+      //   addSolidGeometry(2, 2, new THREE.DodecahedronGeometry(radius));
+      // }
 
       {
         const radius = 7;
         addSolidGeometry(-1, 1, new THREE.IcosahedronGeometry(radius));
       }
       
-      {
-        const verticesOfCube = [
-            -1, -1, -1,    1, -1, -1,    1,  1, -1,    -1,  1, -1,
-            -1, -1,  1,    1, -1,  1,    1,  1,  1,    -1,  1,  1,
-        ];
-        const indicesOfFaces = [
-            2, 1, 0,    0, 3, 2,
-            0, 4, 7,    7, 3, 0,
-            0, 1, 5,    5, 4, 0,
-            1, 2, 6,    6, 5, 1,
-            2, 3, 7,    7, 6, 2,
-            4, 5, 6,    6, 7, 4,
-        ];
-        const radius = 7;
-        const detail = 2;
-        addSolidGeometry(-1, 0, new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, radius, detail));
-      }
+      // {
+      //   const verticesOfCube = [
+      //       -1, -1, -1,    1, -1, -1,    1,  1, -1,    -1,  1, -1,
+      //       -1, -1,  1,    1, -1,  1,    1,  1,  1,    -1,  1,  1,
+      //   ];
+      //   const indicesOfFaces = [
+      //       2, 1, 0,    0, 3, 2,
+      //       0, 4, 7,    7, 3, 0,
+      //       0, 1, 5,    5, 4, 0,
+      //       1, 2, 6,    6, 5, 1,
+      //       2, 3, 7,    7, 6, 2,
+      //       4, 5, 6,    6, 7, 4,
+      //   ];
+      //   const radius = 7;
+      //   const detail = 2;
+      //   addSolidGeometry(-1, 0, new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, radius, detail));
+      // }
       
       function resizeRendererToDisplaySize(renderer) {
         const canvas = renderer.domElement;
