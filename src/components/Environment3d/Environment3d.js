@@ -76,6 +76,7 @@ class Environment3d {
         obj.position.y = y * spread;
     
         scene.add(obj);
+        window.primitive = obj;
         objects.push(obj);
       }
     
@@ -139,8 +140,10 @@ class Environment3d {
           camera.updateProjectionMatrix();
         }
     
-        objects.forEach((obj, ndx) => {
-          const speed = .1 + ndx * .05;
+        objects.forEach((obj, i) => {
+          const speed = .1 + i * .05;
+          const scale = time / 100;
+          obj.scale.set( scale, scale, scale);
           const rot = time * speed;
           obj.rotation.x = rot;
           obj.rotation.y = rot;
