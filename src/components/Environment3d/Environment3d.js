@@ -20,7 +20,7 @@ class Environment3d {
 
 
 
-    let stats, scene;
+    let stats;
 
     function createLight() {
         const color = 0xFFFFFF;
@@ -29,6 +29,31 @@ class Environment3d {
         light.position.set(-1, 2, 4);
         return light;
     }
+
+    function createCamera() {
+      const fov = 40;
+      const aspect = 2;  // the canvas default
+      const near = 0.1;
+      const far = 1000;
+      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+      camera.position.set(-34.2007125993641, 33.76813491715959,-0.15595484033965595);
+      window.camera = camera; // for debugging purposes
+      return camera;
+    }
+
+    function oscillateScale(obj, time) {
+      const currentScale = obj.scale.x;
+
+      if(!obj.rescaleDirection) {
+        obj.rescaleDirection = 'GROW';
+      }
+      
+      const scaleChange = time / 1000;
+      const newScale = currentScale + scaleChange;
+
+      obj.scale.set( newScale, newScale, newScale);
+    }
+
 
 
     function main() {
@@ -51,19 +76,13 @@ class Environment3d {
       stats.domElement.style.bottom = '0';
       container.appendChild( stats.dom );
 
-      const fov = 40;
-      const aspect = 2;  // the canvas default
-      const near = 0.1;
-      const far = 1000;
-      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.set(-34.2007125993641, 33.76813491715959,-0.15595484033965595);
-      window.camera = camera; // for debugging purposes
+      const camera = createCamera();
 
       const controls = new OrbitControls( camera, renderer.domElement );
       controls.target.set( 0, 0, 0 );
       controls.update();
     
-      scene = new THREE.Scene();
+      const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
       const light = createLight();
       scene.add(light);
@@ -132,7 +151,7 @@ class Environment3d {
       }
     
       function render(time) {
-        time *= 0.001;
+        time *= 0.001; // in ms
     
         if (resizeRendererToDisplaySize(renderer)) {
           const canvas = renderer.domElement;
@@ -142,8 +161,7 @@ class Environment3d {
     
         objects.forEach((obj, i) => {
           const speed = .1 + i * .05;
-          const scale = time / 100;
-          obj.scale.set( scale, scale, scale);
+          oscillateScale(obj, time);
           const rot = time * speed;
           obj.rotation.x = rot;
           obj.rotation.y = rot;
