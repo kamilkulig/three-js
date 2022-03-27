@@ -41,15 +41,23 @@ class Environment3d {
       return camera;
     }
 
-    function oscillateScale(obj, time) {
+    function oscillateScale(obj) {
       const currentScale = obj.scale.x;
 
       if(!obj.rescaleDirection) {
         obj.rescaleDirection = 'GROW';
       }
+    
+
+      if(obj.rescaleDirection === 'GROW' && currentScale > 2) {
+        obj.rescaleDirection = 'SHRINK';
+      } else if (obj.rescaleDirection === 'SHRINK' && currentScale < 0.5) {
+        obj.rescaleDirection = 'GROW';
+      }
       
-      const scaleChange = time / 1000;
-      const newScale = currentScale + scaleChange;
+      debugger;
+      const scaleChange = 0.01;
+      const newScale = currentScale + scaleChange * (obj.rescaleDirection === 'GROW' ? 1 : -1);
 
       obj.scale.set( newScale, newScale, newScale);
     }
@@ -161,7 +169,7 @@ class Environment3d {
     
         objects.forEach((obj, i) => {
           const speed = .1 + i * .05;
-          oscillateScale(obj, time);
+          oscillateScale(obj);
           const rot = time * speed;
           obj.rotation.x = rot;
           obj.rotation.y = rot;
