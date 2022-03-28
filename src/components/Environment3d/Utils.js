@@ -60,3 +60,25 @@ export function klein(v, u, target) {
 
     target.set(x, y, z).multiplyScalar(0.75);
 }
+
+
+export function oscillateScale(obj) {
+    const currentScale = obj.scale.x;
+
+    if(!obj.rescaleDirection) {
+      obj.rescaleDirection = 'GROW';
+    }
+  
+
+    if(obj.rescaleDirection === 'GROW' && currentScale > 2) {
+      obj.rescaleDirection = 'SHRINK';
+    } else if (obj.rescaleDirection === 'SHRINK' && currentScale < 0.5) {
+      obj.rescaleDirection = 'GROW';
+    }
+    
+    const scaleChange = 0.01;
+    const newScale = currentScale + scaleChange * (obj.rescaleDirection === 'GROW' ? 1 : -1);
+
+    obj.scale.set( newScale, newScale, newScale);
+  }
+

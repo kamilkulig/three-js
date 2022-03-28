@@ -4,8 +4,8 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import { Colors } from '../../utils/colors';
-import { createMaterial, klein } from './Utils';
+import { createMaterial, oscillateScale } from './Utils';
+import Constants from './Constants';
 
 import {ParametricGeometry} from '../../geometries/ParametricGeometry.js';
 import AsyncFontLoader from './AsyncFontLoader';
@@ -17,16 +17,12 @@ class Environment3d {
 
     this.mount = mount; 
 
-
-
-
     let stats;
 
     function createLight() {
-        const color = 0xFFFFFF;
-        const intensity = 1;
-        const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(-1, 2, 4);
+        const color = Constants.colors.white;
+        const light = new THREE.DirectionalLight(color, Constants.lightIntensity);
+        light.position.set(Constants.initialLightPosition.x, Constants.initialLightPosition.z, Constants.initialLightPosition.y);
         return light;
     }
 
@@ -40,28 +36,6 @@ class Environment3d {
       window.camera = camera; // for debugging purposes
       return camera;
     }
-
-    function oscillateScale(obj) {
-      const currentScale = obj.scale.x;
-
-      if(!obj.rescaleDirection) {
-        obj.rescaleDirection = 'GROW';
-      }
-    
-
-      if(obj.rescaleDirection === 'GROW' && currentScale > 2) {
-        obj.rescaleDirection = 'SHRINK';
-      } else if (obj.rescaleDirection === 'SHRINK' && currentScale < 0.5) {
-        obj.rescaleDirection = 'GROW';
-      }
-      
-      debugger;
-      const scaleChange = 0.01;
-      const newScale = currentScale + scaleChange * (obj.rescaleDirection === 'GROW' ? 1 : -1);
-
-      obj.scale.set( newScale, newScale, newScale);
-    }
-
 
 
     function main() {
@@ -117,35 +91,11 @@ class Environment3d {
         const mesh = new THREE.LineSegments(geometry, material);
         addObject(x, y, mesh);
       }
-    
-    
-      // {
-      //   const radius = 7;
-      //   addSolidGeometry(2, 2, new THREE.DodecahedronGeometry(radius));
-      // }
 
       {
         const radius = 7;
         addSolidGeometry(-1, 1, new THREE.IcosahedronGeometry(radius));
       }
-      
-      // {
-      //   const verticesOfCube = [
-      //       -1, -1, -1,    1, -1, -1,    1,  1, -1,    -1,  1, -1,
-      //       -1, -1,  1,    1, -1,  1,    1,  1,  1,    -1,  1,  1,
-      //   ];
-      //   const indicesOfFaces = [
-      //       2, 1, 0,    0, 3, 2,
-      //       0, 4, 7,    7, 3, 0,
-      //       0, 1, 5,    5, 4, 0,
-      //       1, 2, 6,    6, 5, 1,
-      //       2, 3, 7,    7, 6, 2,
-      //       4, 5, 6,    6, 7, 4,
-      //   ];
-      //   const radius = 7;
-      //   const detail = 2;
-      //   addSolidGeometry(-1, 0, new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, radius, detail));
-      // }
       
       function resizeRendererToDisplaySize(renderer) {
         const canvas = renderer.domElement;
