@@ -14,25 +14,28 @@ class Environment3d {
   constructor(mount) {
     // TODO: move most of the code to separate files
 
-
     this.mount = mount; 
-
-    let stats;
 
     function createLight() {
         const color = Constants.colors.white;
-        const light = new THREE.DirectionalLight(color, Constants.lightIntensity);
-        light.position.set(Constants.initialLightPosition.x, Constants.initialLightPosition.z, Constants.initialLightPosition.y);
+        const light = new THREE.DirectionalLight(color, Constants.light.intensity);
+        light.position.set(Constants.light.initialPos.x, Constants.light.initialPos.z, Constants.light.initialPos.y);
         return light;
     }
 
+    function createStats() {
+      const stats = new Stats();
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = 'calc(100% - 80px)';
+      stats.domElement.style.bottom = '0';
+      return stats;
+    }
+
+
     function createCamera() {
-      const fov = 40;
-      const aspect = 2;  // the canvas default
-      const near = 0.1;
-      const far = 1000;
-      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.set(-34.2007125993641, 33.76813491715959,-0.15595484033965595);
+
+      const camera = new THREE.PerspectiveCamera(Constants.camera.fov, Constants.camera.aspect, Constants.camera.near, Constants.camera.far);
+      camera.position.set(Constants.camera.initialPos.x, Constants.camera.initialPos.z, Constants.camera.initialPos.y);
       window.camera = camera; // for debugging purposes
       return camera;
     }
@@ -51,11 +54,7 @@ class Environment3d {
       renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.shadowMap.enabled = true;
     
-      // stats
-      stats = new Stats();
-      stats.domElement.style.position = 'absolute';
-      stats.domElement.style.left = 'calc(100% - 80px)';
-      stats.domElement.style.bottom = '0';
+      const stats = createStats();
       container.appendChild( stats.dom );
 
       const camera = createCamera();
@@ -65,12 +64,12 @@ class Environment3d {
       controls.update();
     
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xffffff);
+      scene.background = new THREE.Color(Constants.colors.white);
       const light = createLight();
       scene.add(light);
 
       const objects = [];
-      const spread = 15;
+      const spread = Constants.objectSpread;
     
       function addObject(x, y, obj) {
         obj.position.x = x * spread;
@@ -87,14 +86,13 @@ class Environment3d {
       }
     
       function addLineGeometry(x, y, geometry) {
-        const material = new THREE.LineBasicMaterial({color: 0x000000});
+        const material = new THREE.LineBasicMaterial({color: Constants.colors.white});
         const mesh = new THREE.LineSegments(geometry, material);
         addObject(x, y, mesh);
       }
 
       {
-        const radius = 7;
-        addSolidGeometry(-1, 1, new THREE.IcosahedronGeometry(radius));
+        addSolidGeometry(Constants.icosahedron.initialPos.x, Constants.icosahedron.initialPos.y, new THREE.IcosahedronGeometry(Constants.icosahedron.radius));
       }
       
       function resizeRendererToDisplaySize(renderer) {
@@ -118,7 +116,7 @@ class Environment3d {
         }
     
         objects.forEach((obj, i) => {
-          const speed = .1 + i * .05;
+          const speed = Constants.icosahedron.speed;
           oscillateScale(obj);
           const rot = time * speed;
           obj.rotation.x = rot;
