@@ -1,6 +1,8 @@
 
 import * as THREE from 'three';
 
+
+// TODO: implement constants here
 export function createMaterial() {
     const material = new THREE.MeshPhongMaterial({
         side: THREE.DoubleSide,
