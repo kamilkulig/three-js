@@ -1,19 +1,17 @@
+import * as THREE from "three";
+import Constants from "./Constants";
 
-import * as THREE from 'three';
-
-
-// TODO: implement constants here
 export function createMaterial() {
-    const material = new THREE.MeshPhongMaterial({
-        side: THREE.DoubleSide,
-    });
+  const material = new THREE.MeshPhongMaterial({
+    side: THREE.DoubleSide,
+  });
 
-    const hue = Math.random();
-    const saturation = 1;
-    const luminance = .5;
-    material.color.setHSL(hue, saturation, luminance);
+  const hue = Math.random();
+  const saturation = Constants.material.saturation;
+  const luminance = Constants.material.luminance;
+  material.color.setHSL(hue, saturation, luminance);
 
-    return material;
+  return material;
 }
 
 /*
@@ -43,44 +41,55 @@ THE SOFTWARE.
 
 */
 export function klein(v, u, target) {
-    u *= Math.PI;
-    v *= 2 * Math.PI;
-    u = u * 2;
+  u *= Math.PI;
+  v *= 2 * Math.PI;
+  u = u * 2;
 
-    let x;
-    let z;
+  let x;
+  let z;
 
-    if (u < Math.PI) {
-        x = 3 * Math.cos(u) * (1 + Math.sin(u)) + (2 * (1 - Math.cos(u) / 2)) * Math.cos(u) * Math.cos(v);
-        z = -8 * Math.sin(u) - 2 * (1 - Math.cos(u) / 2) * Math.sin(u) * Math.cos(v);
-    } else {
-        x = 3 * Math.cos(u) * (1 + Math.sin(u)) + (2 * (1 - Math.cos(u) / 2)) * Math.cos(v + Math.PI);
-        z = -8 * Math.sin(u);
-    }
-
-    const y = -2 * (1 - Math.cos(u) / 2) * Math.sin(v);
-
-    target.set(x, y, z).multiplyScalar(0.75);
-}
-
-
-export function oscillateScale(obj) {
-    const currentScale = obj.scale.x;
-
-    if(!obj.rescaleDirection) {
-      obj.rescaleDirection = 'GROW';
-    }
-  
-
-    if(obj.rescaleDirection === 'GROW' && currentScale > 2) {
-      obj.rescaleDirection = 'SHRINK';
-    } else if (obj.rescaleDirection === 'SHRINK' && currentScale < 0.5) {
-      obj.rescaleDirection = 'GROW';
-    }
-    
-    const scaleChange = 0.01;
-    const newScale = currentScale + scaleChange * (obj.rescaleDirection === 'GROW' ? 1 : -1);
-
-    obj.scale.set( newScale, newScale, newScale);
+  if (u < Math.PI) {
+    x =
+      3 * Math.cos(u) * (1 + Math.sin(u)) +
+      2 * (1 - Math.cos(u) / 2) * Math.cos(u) * Math.cos(v);
+    z =
+      -8 * Math.sin(u) - 2 * (1 - Math.cos(u) / 2) * Math.sin(u) * Math.cos(v);
+  } else {
+    x =
+      3 * Math.cos(u) * (1 + Math.sin(u)) +
+      2 * (1 - Math.cos(u) / 2) * Math.cos(v + Math.PI);
+    z = -8 * Math.sin(u);
   }
 
+  const y = -2 * (1 - Math.cos(u) / 2) * Math.sin(v);
+
+  target.set(x, y, z).multiplyScalar(0.75);
+}
+
+export function oscillateScale(obj) {
+  const currentScale = obj.scale.x;
+
+  if (!obj.rescaleDirection) {
+    obj.rescaleDirection = Constants.rescale.direction.grow;
+  }
+
+  if (
+    obj.rescaleDirection === Constants.rescale.direction.grow &&
+    currentScale > Constants.rescale.maxScale
+  ) {
+    obj.rescaleDirection = Constants.rescale.direction.shrink;
+  } else if (
+    obj.rescaleDirection === Constants.rescale.direction.shrink &&
+    currentScale < Constants.rescale.minScale
+  ) {
+    obj.rescaleDirection = Constants.rescale.direction.grow;
+  }
+
+  const scaleChange = Constants.rescale.scaleChange;
+  const newScale =
+    currentScale +
+    scaleChange *
+      (obj.rescaleDirection === Constants.rescale.direction.grow ? 1 : -1);
+
+  obj.scale.set(newScale, newScale, newScale);
+}
