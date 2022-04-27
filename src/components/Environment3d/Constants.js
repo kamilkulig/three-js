@@ -1,6 +1,7 @@
 export default {
   colors: {
     white: 0xffffff,
+    blue: 0x90c1e8,
   },
 
   camera: {

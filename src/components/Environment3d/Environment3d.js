@@ -28,6 +28,11 @@ class Environment3d {
       return light;
     }
 
+    // TODO: convert numbers so that everything is in meters
+    function createFog() {
+      return new THREE.Fog(Constants.colors.blue, 1, 1000)
+    }
+
     function createStats() {
       const stats = new Stats();
       stats.domElement.style.position = "absolute";
@@ -72,9 +77,11 @@ class Environment3d {
       controls.update();
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(Constants.colors.white);
+      scene.background = new THREE.Color(Constants.colors.blue);
       const light = createLight();
       scene.add(light);
+
+      scene.fog = createFog();
 
       const objects = [];
       const spread = Constants.objectSpread;
