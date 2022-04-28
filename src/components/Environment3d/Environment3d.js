@@ -14,6 +14,19 @@ class Environment3d {
   constructor(mount) {
     this.mount = mount;
 
+    function createFloor() {
+      const geometry = new THREE.PlaneGeometry(1000, 1000);
+
+      const material = new THREE.MeshBasicMaterial({
+        color: Constants.colors.green,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.rotation.x = Math.PI / 2;
+
+      return mesh;
+    }
+
     function createLight() {
       const color = Constants.colors.white;
       const light = new THREE.DirectionalLight(
@@ -30,7 +43,7 @@ class Environment3d {
 
     // TODO: convert numbers so that everything is in meters
     function createFog() {
-      return new THREE.Fog(Constants.colors.blue, 1, 1000)
+      return new THREE.Fog(Constants.colors.blue, 1, 1000);
     }
 
     function createStats() {
@@ -82,6 +95,9 @@ class Environment3d {
       scene.add(light);
 
       scene.fog = createFog();
+
+      const floor = createFloor();
+      scene.add(floor);
 
       const objects = [];
       const spread = Constants.objectSpread;

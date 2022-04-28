@@ -2,6 +2,7 @@ export default {
   colors: {
     white: 0xffffff,
     blue: 0x90c1e8,
+    green: 0xd5d98d,
   },
 
   camera: {
@@ -11,9 +12,9 @@ export default {
     far: 1000,
 
     initialPos: {
-      x: -401.14566298739993,
-      y: 396.0718897255874,
-      z: -1.8292194246651046,
+      x: 54.243670117534094,
+      y: 32.64288185099514,
+      z: 314.33919295694875,
     },
   },
 
