@@ -10,12 +10,15 @@ import Constants from "./Constants";
 import { ParametricGeometry } from "../../geometries/ParametricGeometry.js";
 import AsyncFontLoader from "./AsyncFontLoader";
 
+
+// TODO: add DAT.GUI
+
 class Environment3d {
   constructor(mount) {
     this.mount = mount;
 
     function createFloor() {
-      const geometry = new THREE.PlaneGeometry(1000, 1000);
+      const geometry = new THREE.PlaneGeometry(Constants.floor.size, Constants.floor.size);
 
       const material = new THREE.MeshBasicMaterial({
         color: Constants.colors.green,
@@ -35,8 +38,8 @@ class Environment3d {
       );
       light.position.set(
         Constants.light.initialPos.x,
+        Constants.light.initialPos.y,
         Constants.light.initialPos.z,
-        Constants.light.initialPos.y
       );
       return light;
     }
@@ -63,8 +66,9 @@ class Environment3d {
       );
       camera.position.set(
         Constants.camera.initialPos.x,
+        Constants.camera.initialPos.y,
         Constants.camera.initialPos.z,
-        Constants.camera.initialPos.y
+
       );
       window.camera = camera; // for debugging purposes
       return camera;
@@ -86,7 +90,7 @@ class Environment3d {
       const camera = createCamera();
 
       const controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(0, 0, 0);
+      controls.target.set(Constants.icosahedron.initialPos.x, Constants.icosahedron.initialPos.y, Constants.icosahedron.initialPos.z);
       controls.update();
 
       const scene = new THREE.Scene();
