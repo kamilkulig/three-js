@@ -9,6 +9,7 @@ import Constants from "./Constants";
 
 import { ParametricGeometry } from "../../geometries/ParametricGeometry.js";
 import AsyncFontLoader from "./AsyncFontLoader";
+import { GUI } from 'dat.gui'
 
 
 // TODO: add DAT.GUI
@@ -52,8 +53,7 @@ class Environment3d {
     function createStats() {
       const stats = new Stats();
       stats.domElement.style.position = "absolute";
-      stats.domElement.style.left = "calc(100% - 80px)";
-      stats.domElement.style.bottom = "0";
+
       return stats;
     }
 
@@ -98,13 +98,22 @@ class Environment3d {
       const light = createLight();
       scene.add(light);
 
-      scene.fog = createFog();
+      const fog =  createFog();
+      scene.fog =fog;
 
       const floor = createFloor();
       scene.add(floor);
 
+      window.fog = fog;
       const objects = [];
       const spread = Constants.objectSpread;
+
+      const gui = new GUI()
+      const fogFolder = gui.addFolder('Fog')
+      fogFolder.add(fog, 'far', 0, 1000)
+      fogFolder.open()
+
+
 
       function addObject(x, y, obj) {
         obj.position.x = x * spread;
