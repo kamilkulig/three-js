@@ -11,9 +11,6 @@ import { ParametricGeometry } from "../../geometries/ParametricGeometry.js";
 import AsyncFontLoader from "./AsyncFontLoader";
 import { GUI } from 'dat.gui'
 
-
-// TODO: add DAT.GUI
-
 class Environment3d {
   constructor(mount) {
     this.mount = mount;
@@ -53,6 +50,7 @@ class Environment3d {
     function createStats() {
       const stats = new Stats();
       stats.domElement.style.position = "absolute";
+      stats.domElement.style.top = `${window.innerHeight - 48}px`
 
       return stats;
     }
@@ -108,7 +106,7 @@ class Environment3d {
       const objects = [];
       const spread = Constants.objectSpread;
 
-      const gui = new GUI()
+      const gui = new GUI();
       const fogFolder = gui.addFolder('Fog')
       fogFolder.add(fog, 'far', 0, 1000)
       fogFolder.open()
